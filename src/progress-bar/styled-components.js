@@ -40,11 +40,9 @@ export const BarProgress = styled<StylePropsT>('div', props => {
   const {colors, sizing, borders} = $theme;
   const width = `${($value / $successValue) * 100}%`;
   const borderRadius = borders.useRoundedCorners ? sizing.scale0 : 0;
-
-  const animationStyles = $infinite
+  
+  const animationStyles = ($value < $successValue)
     ? {
-        width: '100%',
-        position: 'absolute',
         animationDuration: '2.1s',
         animationIterationCount: 'infinite',
         animationTimingFunction: 'cubic-bezier(0.65, 0.815, 0.735, 0.395)',
@@ -63,6 +61,14 @@ export const BarProgress = styled<StylePropsT>('div', props => {
           },
         },
       }
+    : {}:
+
+  const variantStyles = $infinite
+    ? {
+        width: '100%',
+        position: 'absolute',
+        ...animationStyles,
+      }
     : {
         width: width,
         transition: 'width 0.5s',
@@ -75,7 +81,7 @@ export const BarProgress = styled<StylePropsT>('div', props => {
     borderBottomLeftRadius: borderRadius,
     backgroundColor: colors.accent,
     height: '100%',
-    ...animationStyles,
+    ...variantStyles,
   };
 });
 
